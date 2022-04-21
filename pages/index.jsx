@@ -1,7 +1,28 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
+import Script from "next/script";
+import { useEffect, useRef, useState } from "react";
+import { LottiePlayer } from "lottie-web";
 
 export default function Home() {
+	const ref = useRef < HTMLDivElement > null;
+	const [lottie, setLottie] = (useState < LottiePlayer) | (null > null);
+
+	useEffect(() => {
+		if (lottie && ref.current) {
+			const animation = lottie.loadAnimation({
+				container: ref.current,
+				renderer: "svg",
+				loop: true,
+				autoplay: true,
+				// path to your animation file, place it inside public folder
+				path: "/animation/lottie.json",
+			});
+
+			return () => animation.destroy();
+		}
+	}, [lottie]);
+
 	return (
 		<div className={styles.container}>
 			<Head>
@@ -19,6 +40,17 @@ export default function Home() {
 					Get started by editing{" "}
 					<code className={styles.code}>pages/index.js</code>
 				</p>
+				<Script>
+					<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+					<lottie-player
+						src="https://assets6.lottiefiles.com/packages/lf20_oi0plzot.json"
+						background="transparent"
+						speed="1"
+						style="width: 300px; height: 300px;"
+						loop
+						autoplay
+					></lottie-player>
+				</Script>
 			</main>
 		</div>
 	);
